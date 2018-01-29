@@ -1,0 +1,17 @@
+#set window split
+bind-key - split-window -v
+bind-key | split-window -h
+unbind '"'
+unbind %
+
+#set pane switching
+bind -n h select-pane -L
+bind -n j select-pane -D
+bind -n k select-pane -U
+bind -n l select-pane -R
+
+#pane switching enabled with mouse
+set -g mouse on
+
+# Set window colors
+set-window-option -g window-status-current-bg green

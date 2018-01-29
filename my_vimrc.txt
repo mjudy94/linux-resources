@@ -1,0 +1,55 @@
+" The following block is required to use vundle
+set nocompatible 
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'slashmili/alchemist.vim'
+Plugin 'elixir-editors/vim-elixir'
+
+call vundle#end() 
+filetype plugin indent on
+" End vundle dependencies
+
+
+syntax on
+set shiftwidth=2
+set softtabstop=2		" tabstop of 2
+set expandtab
+set smarttab
+set number			" show line number
+set autoread			" listen for file changes
+set autoindent smartindent	" auto/smart indenting
+set undolevels=1000		" 1000 undos
+
+"  searching
+set showmatch			" show matching brackets
+set hlsearch			" highlight the search
+set ignorecase                  " ignorecase on search
+set incsearch                   " incremental search
+
+" backup - Need to create dir, look into this more...
+" set backup 
+" set backupdir=~/.vim_backup
+
+
+" english for spellchecking but don't do it by default
+if v:version >= 700
+  set spl=en spell
+  set nospell
+endif
+
+" better file navigation with g
+nnoremap <silent> k gk
+nnoremap <silent> j gj
+noremap <silent> <Up> <Esc>gka
+inoremap <silent> <Down> <Esc>gja
+
+" space to toggle folds
+nnoremap <space> za
+
+
+" trying this out, swap : and ;
+nore ; :
+nore : ;
