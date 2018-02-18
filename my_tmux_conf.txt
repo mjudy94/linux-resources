@@ -5,10 +5,10 @@ unbind '"'
 unbind %
 
 #set pane switching
-bind -n h select-pane -L
-bind -n j select-pane -D
-bind -n k select-pane -U
-bind -n l select-pane -R
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
 
 #pane switching enabled with mouse
 set -g mouse on
