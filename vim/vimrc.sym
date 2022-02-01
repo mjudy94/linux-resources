@@ -1,17 +1,42 @@
-" The following block is required to use vundle
-set nocompatible 
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+" Install vim-plug if not found
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'slashmili/alchemist.vim'
-Plugin 'elixir-editors/vim-elixir'
+" Run PlugInstall if there are missing plugins
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| PlugInstall --sync | source $MYVIMRC
+\| endif
 
-call vundle#end() 
-filetype plugin indent on
-" End vundle dependencies
+call plug#begin()
+Plug 'slashmili/alchemist.vim'
+Plug 'preservim/nerdtree'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-ruby/vim-ruby'
+Plug 'w0rp/ale'
+Plug 'junegunn/fzf'
+Plug 'elixir-editors/vim-elixir'
 
+" Color schemes
+Plug 'arcticicestudio/nord-vim'
+
+call plug#end()
+
+" Inspect $TERM instad of t_Co as it works in neovim as well
+if &term =~ '256color'
+" Enable true (24-bit) colors instead of (8-bit) 256 colors.
+" :h true-color
+  if has('termguicolors')
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    set termguicolors
+  endif
+  colorscheme nord
+endif
 
 syntax on
 set shiftwidth=2
@@ -30,7 +55,7 @@ set ignorecase                  " ignorecase on search
 set incsearch                   " incremental search
 
 " backup - Need to create dir, look into this more...
-" set backup 
+" set backup
 " set backupdir=~/.vim_backup
 
 
@@ -53,3 +78,50 @@ nnoremap <space> za
 " trying this out, swap : and ;
 nore ; :
 nore : ;
+
+set backspace=indent,eol,start
+
+" Warning column to prevent lengthy lines
+set colorcolumn=101
+
+" Split pane navigation simplification
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" Change default split behavior
+set splitbelow
+set splitright
+
+" Set NerdTreeToggle
+nnoremap <C-o> :NERDTreeToggle<CR>
+
+"""""""""""""""""""""""
+"     Ale Config      "
+"""""""""""""""""""""""
+let g:ale_linters = {
+\   'ruby': ['rubocop'],
+\   'javascript': ['eslint'],
+\}
+
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'ruby': ['rubocop'],
+\   'javascript': ['eslint'],
+\}
+
+" Only run linters named in ale_linters settings.
+let g:ale_linters_explicit = 1
+
+" Enable vim airline extension so lint errors show in status bar
+let g:airline#extensions#ale#enabled = 1
+
+let g:ale_sign_column_always = 1
+
+" Disable ALE auto highlights to prevent conflicts with existing syntax
+" highlighting
+let g:ale_set_highlights = 0
+
+" Testing this out, let ale autofix files on save
+let g:ale_fix_on_save = 1

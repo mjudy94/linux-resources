@@ -1,6 +1,6 @@
 #set window split
-bind-key - split-window -v
-bind-key | split-window -h
+bind - split-window -v -c '#{pane_current_path}'
+bind | split-window -h -c '#{pane_current_path}'
 unbind '"'
 unbind %
 
@@ -15,3 +15,18 @@ set -g mouse on
 
 # Set window colors
 set-window-option -g window-status-current-bg green
+
+# Set new panes to open in current directory
+bind c new-window -c "#{pane_current_path}"
+#bind '"' split-window -c "#{pane_current_path}"
+#bind % split-window -h -c "#{pane_current_path}"
+
+# Setup Plugin Support
+set -g @plugin 'tmux-plugins/tpm'
+
+# Set Colors/Theme
+#set -g @plugin "arcticicestudio/nord-tmux"
+run "~/.tmux/plugins/tpm/tpm"
+
+set -g default-terminal "tmux-256color"
+set -ga terminal-overrides ',xterm-256color:Tc'
